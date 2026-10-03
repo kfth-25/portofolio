@@ -844,6 +844,11 @@
       box-shadow: 0 16px 32px rgba(26, 20, 12, .2);
     }
 
+    a.pill {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .pill {
       display: inline-flex;
       flex: 1 1 0;
@@ -2037,6 +2042,21 @@
       }
     }
 
+    .inline-link {
+      color: var(--pink-bright);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+
+    .inline-link:hover {
+      color: var(--paper);
+    }
+
+    .doc-review .inline-link {
+      white-space: nowrap;
+    }
+
     /* Footer */
     .site-footer {
       width: min(1120px, 92vw);
@@ -2269,7 +2289,7 @@
               <h3>AI Agent di Produk Nyata</h3>
               <p>
                 Keqo — agent yang membuat PPT, Word, dan analisis Excel secara real-time.
-                Food Scanner — estimasi gizi dari foto lewat Gemini Vision API.
+                Food Scanner — estimasi gizi dari foto lewat AI Vision API.
               </p>
             </div>
           </article>
@@ -2396,7 +2416,7 @@
               <span class="cover-title">Food<br>Scanner</span>
               <span class="cover-subtitle">Food &amp; Nutrition AI</span>
               <span></span>
-              <span class="cover-footer">Flutter · Gemini Vision</span>
+              <span class="cover-footer">Flutter · AI Vision</span>
             </span>
           </span>
           <span class="open-badge">Open</span>
@@ -2495,8 +2515,8 @@
               </svg>
               Profile
             </button>
-            <button class="pill" type="button" data-toast="github.com/kfth-25">GitHub</button>
-            <button class="pill" type="button" data-toast="kemalfatah79@gmail.com">Email Me</button>
+            <a class="pill" href="https://github.com/kfth-25" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="pill" href="mailto:kemalfatah79@gmail.com">Email Me</a>
             <button class="pill icon-only" id="saveButton" type="button" aria-label="Save project" aria-pressed="false">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6.8 4.2h10.4v15.6L12 16.6l-5.2 3.2V4.2Z"/>
@@ -2615,15 +2635,15 @@
           title: "Food Scanner",
           year: "2025",
           description:
-            "Aplikasi mobile Flutter yang menggunakan Gemini Vision API untuk mendeteksi jenis makanan dari foto dan memperkirakan kandungan gizinya secara otomatis.",
+            "Aplikasi mobile Flutter yang menggunakan AI Vision API untuk mendeteksi jenis makanan dari foto dan memperkirakan kandungan gizinya secara otomatis.",
           steps: [
             {
               title: "Camera Integration",
               body: "Ambil foto makanan langsung dari kamera aplikasi dengan UI yang sederhana."
             },
             {
-              title: "Gemini Vision API",
-              body: "Deteksi jenis makanan dari foto memakai Gemini Vision API secara real-time."
+              title: "AI Vision API",
+              body: "Deteksi jenis makanan dari foto memakai AI Vision API secara real-time."
             },
             {
               title: "Nutrition Estimate",
@@ -2635,7 +2655,7 @@
             }
           ],
           prompt:
-            "Flutter · Gemini Vision API · Camera · Real-time Inference",
+            "Flutter · AI Vision API · Camera · Real-time Inference",
           review:
             "Demo: youtube.com/shorts/DOma56IhRUA — Contoh integrasi multimodal AI di mobile app produksi."
         },
@@ -2798,6 +2818,29 @@
 
       let detailScrollLockY = 0;
 
+      function linkifyText(el, raw) {
+        el.textContent = "";
+        if (!raw) return;
+        const parts = String(raw).split(/(https?:\/\/[^\s]+|www\.[^\s]+|youtube\.com\/[^\s]+|youtu\.be\/[^\s]+)/gi);
+        for (const part of parts) {
+          if (!part) continue;
+          const isUrl = /^(https?:\/\/|www\.)/i.test(part) || /^(youtube\.com|youtu\.be)\//i.test(part);
+          if (isUrl) {
+            let href = part;
+            if (!/^https?:\/\//i.test(href)) href = "https://" + href;
+            const a = document.createElement("a");
+            a.href = href;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = part.replace(/^https?:\/\//i, "");
+            a.className = "inline-link";
+            el.append(a);
+          } else {
+            el.append(document.createTextNode(part));
+          }
+        }
+      }
+
       function fillDetail(card, data) {
         selectedCard = card;
         selectedCard.style.setProperty("--detail-yaw", "-5deg");
@@ -2818,7 +2861,7 @@
           return item;
         }));
         detailPrompt.textContent = data.prompt;
-        detailReview.textContent = data.review;
+        linkifyText(detailReview, data.review);
         detailScroll.scrollTop = 0;
         detailYear.textContent = data.year;
         cards.forEach((item) => item.classList.toggle("selected", item === card));

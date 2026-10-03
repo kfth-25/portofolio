@@ -1218,9 +1218,27 @@
         padding: 0 18px;
       }
 
+      /* Works title sits in normal flow ABOVE the book carousel (not overlaid) */
       .hero-word {
-        top: 17vh;
-        font-size: clamp(128px, 28vw, 230px);
+        position: relative;
+        top: auto;
+        left: auto;
+        z-index: 2;
+        margin: 0;
+        padding: 10vh 4vw 0;
+        text-align: center;
+        font-size: clamp(72px, 20vw, 160px);
+        transform: none;
+        white-space: nowrap;
+      }
+
+      [data-mode="detail"] .hero-word {
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        transform: none;
+        pointer-events: none;
       }
 
       /* Bookshelf → horizontal snap carousel on tablets/phones */
@@ -1237,7 +1255,7 @@
         gap: 18px;
         overflow-x: auto;
         overflow-y: visible;
-        padding: 18vh 6vw 8vh;
+        padding: 3vh 6vw 8vh;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
@@ -1338,13 +1356,13 @@
       }
 
       .hero-word {
-        top: 22vh;
-        font-size: 38vw;
+        padding-top: 8vh;
+        font-size: clamp(56px, 18vw, 96px);
       }
 
       .gallery {
         gap: 14px;
-        padding: 16vh 5vw 6vh;
+        padding: 2vh 5vw 6vh;
       }
 
       .book-card,

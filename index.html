@@ -535,7 +535,7 @@
 
     .cover-title {
       margin-top: 2.2%;
-      font-size: clamp(35px, 4.3vw, 64px);
+      font-size: clamp(28px, 4.3vw, 64px);
       font-weight: 600;
       letter-spacing: -.055em;
       line-height: .9;
@@ -553,10 +553,11 @@
       align-self: end;
       padding-top: 3%;
       border-top: 1px solid currentColor;
-      font-size: clamp(7px, .62vw, 9px);
+      font-size: clamp(9px, .62vw, 9px);
       font-weight: 700;
-      letter-spacing: .18em;
+      letter-spacing: .14em;
       text-transform: uppercase;
+      line-height: 1.3;
     }
 
     .book-card[data-book="keqo"] .cover-copy {
@@ -1222,39 +1223,68 @@
         font-size: clamp(128px, 28vw, 230px);
       }
 
-      .book-card[data-book="keqo"] {
-        --x: 12%;
-        --y: 42%;
-        --w: min(38vw, 300px);
+      /* Bookshelf → horizontal snap carousel on tablets/phones */
+      .stage {
+        min-height: auto;
+        overflow: visible;
+        padding-bottom: 32px;
       }
 
-      .book-card[data-book="food-scanner"] {
-        --x: 37%;
-        --y: 37%;
-        --w: min(40vw, 320px);
+      .gallery {
+        position: relative;
+        inset: auto;
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding: 18vh 6vw 8vh;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
       }
 
-      .book-card[data-book="febri-net"] {
-        --x: 63%;
-        --y: 37%;
-        --w: min(40vw, 320px);
+      .gallery::-webkit-scrollbar {
+        display: none;
       }
 
+      .book-card,
+      .book-card[data-book="keqo"],
+      .book-card[data-book="food-scanner"],
+      .book-card[data-book="febri-net"],
       .book-card[data-book="taniku"] {
-        --x: 88%;
-        --y: 42%;
-        --w: min(38vw, 300px);
+        position: relative;
+        left: auto;
+        top: auto;
+        flex: 0 0 auto;
+        width: min(58vw, 240px);
+        scroll-snap-align: center;
+        transform: rotate(var(--r)) rotateY(var(--yaw));
+      }
+
+      .open-badge {
+        opacity: 1;
+        width: 72px;
+        height: 50px;
+        font-size: 10px;
+        transform: translate(-50%, -50%) scale(1) rotate(-3deg);
       }
 
       [data-mode="detail"] .stage {
-        min-height: calc(100svh + 760px);
-        overflow-y: auto;
+        min-height: 100svh;
+        overflow: hidden;
+      }
+
+      [data-mode="detail"] .gallery {
+        overflow: hidden;
+        padding-top: 12vh;
       }
 
       [data-mode="detail"] .book-card.selected {
+        position: absolute;
         left: 50%;
-        top: 50svh;
-        width: min(58vw, 340px);
+        top: 28%;
+        width: min(52vw, 220px);
+        transform: translate3d(-50%, -50%, 0) rotate(-3deg);
       }
 
       .detail-panel {
@@ -1312,41 +1342,49 @@
         font-size: 38vw;
       }
 
-      .book-card[data-book="keqo"] {
-        --x: 2%;
-        --y: 46%;
-        --w: 52vw;
+      .gallery {
+        gap: 14px;
+        padding: 16vh 5vw 6vh;
       }
 
-      .book-card[data-book="food-scanner"] {
-        --x: 28%;
-        --y: 40%;
-        --w: 54vw;
-      }
-
-      .book-card[data-book="febri-net"] {
-        --x: 72%;
-        --y: 40%;
-        --w: 54vw;
-      }
-
+      .book-card,
+      .book-card[data-book="keqo"],
+      .book-card[data-book="food-scanner"],
+      .book-card[data-book="febri-net"],
       .book-card[data-book="taniku"] {
-        --x: 98%;
-        --y: 46%;
-        --w: 52vw;
+        width: min(62vw, 220px);
+      }
+
+      .cover-kicker {
+        font-size: 9px;
+        letter-spacing: .12em;
+      }
+
+      .cover-title {
+        font-size: clamp(26px, 7vw, 36px);
+      }
+
+      .cover-subtitle {
+        font-size: 11px;
+      }
+
+      .cover-footer {
+        font-size: 9px;
+        letter-spacing: .1em;
       }
 
       [data-mode="detail"] .stage {
-        min-height: calc(100svh + 760px);
+        min-height: 100svh;
       }
 
       [data-mode="detail"] .book-card.selected {
-        width: min(67vw, 315px);
+        width: min(58vw, 200px);
+        top: 24%;
       }
 
-      .detail-panel {
-        right: 20px;
-        left: 20px;
+      [data-mode="detail"] .detail-panel {
+        top: 42%;
+        max-height: 52svh;
       }
 
       .detail-scroll {
@@ -2026,14 +2064,12 @@
         padding: 12px 14px 16px;
         background: linear-gradient(180deg, transparent, rgba(29, 26, 21, .92) 28%);
       }
-
-
     }
 
     @media (max-width: 560px) {
       [data-mode="detail"] .book-card.selected {
         top: 24%;
-        width: min(46vw, 180px);
+        width: min(58vw, 200px);
       }
 
       [data-mode="detail"] .detail-panel {
@@ -2173,6 +2209,55 @@
       .btn-primary,
       .btn-ghost {
         width: 100%;
+      }
+
+      /* Tentang Saya / Skills — stack aside ke 1 kolom di HP */
+      .editorial-aside {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .aside-label {
+        margin-top: 14px;
+      }
+
+      .editorial-item {
+        grid-template-columns: 40px minmax(0, 1fr);
+        gap: 12px;
+        padding: 22px 0;
+      }
+
+      .editorial-item h3 {
+        font-size: clamp(22px, 6vw, 28px);
+      }
+
+      .section {
+        padding-top: 56px;
+      }
+
+      .section-title {
+        font-size: clamp(28px, 8vw, 40px);
+      }
+
+      .section-kicker {
+        font-size: 11px;
+      }
+
+      .editorial-deck {
+        font-size: 15px;
+      }
+
+      .ledger-items {
+        font-size: 15px;
+      }
+
+      .contact-panel h2 {
+        font-size: clamp(32px, 9vw, 48px);
+      }
+
+      .contact-meta a {
+        font-size: 16px;
+        padding: 14px 0;
       }
     }
 

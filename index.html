@@ -96,7 +96,7 @@
 
     .topbar {
       position: fixed;
-      z-index: 50;
+      z-index: 40;
       top: 0;
       left: 0;
       display: flex;
@@ -910,7 +910,7 @@
     .close-button {
       position: absolute;
       z-index: 52;
-      top: 30px;
+      top: 96px;
       left: 50%;
       display: grid;
       width: 54px;
@@ -1294,34 +1294,36 @@
 
       [data-mode="detail"] .gallery {
         overflow: hidden;
-        padding-top: 12vh;
+        padding-top: 0;
       }
 
       [data-mode="detail"] .book-card.selected {
         position: absolute;
         left: 50%;
-        top: 28%;
+        top: 42%;
         width: min(52vw, 220px);
         transform: translate3d(-50%, -50%, 0) rotate(-3deg);
       }
 
-      .detail-panel {
-        top: calc(100svh + 48px);
-        right: 7%;
-        left: 7%;
+      [data-mode="detail"] .detail-panel {
+        top: 54%;
+        right: 5%;
+        left: 5%;
         width: auto;
-        padding-bottom: 130px;
+        max-height: 40svh;
+        overflow: auto;
+        padding-bottom: 24px;
       }
 
-      .detail-scroll {
-        max-height: min(500px, calc(100svh - 310px));
+      [data-mode="detail"] .detail-scroll {
+        max-height: min(420px, calc(100svh - 380px));
       }
 
-      .detail-title {
-        font-size: clamp(48px, 10vw, 70px);
+      [data-mode="detail"] .detail-title {
+        font-size: clamp(28px, 8vw, 40px);
       }
 
-      .bottom-dock {
+      [data-mode="detail"] .bottom-dock {
         right: 20px;
         bottom: 20px;
         left: 20px;
@@ -1397,12 +1399,12 @@
 
       [data-mode="detail"] .book-card.selected {
         width: min(58vw, 200px);
-        top: 24%;
+        top: 40%;
       }
 
       [data-mode="detail"] .detail-panel {
-        top: 42%;
-        max-height: 52svh;
+        top: 52%;
+        max-height: 42svh;
       }
 
       .detail-scroll {
@@ -1435,7 +1437,7 @@
       }
 
       .close-button {
-        top: 18px;
+        top: 88px;
       }
     }
 
@@ -2026,7 +2028,7 @@
 
     [data-mode="detail"] .stage {
       position: relative;
-      z-index: 50;
+      z-index: 60;
     }
 
     @media (min-width: 901px) {
@@ -2045,7 +2047,12 @@
     }
 
     @media (max-width: 900px) {
-      /* Keep book + panel in one screen instead of panel below fold */
+      /* Detail stage sits ABOVE the fixed topbar on small screens */
+      [data-mode="detail"] .page,
+      body[data-mode="detail"] .page {
+        z-index: 60;
+      }
+
       [data-mode="detail"] .stage {
         min-height: 100svh;
         height: 100svh;
@@ -2054,17 +2061,17 @@
 
       [data-mode="detail"] .book-card.selected {
         left: 50%;
-        top: 28%;
+        top: 42%;
         width: min(52vw, 220px);
         transform: translate3d(-50%, -50%, 0) rotate(-3deg);
       }
 
       [data-mode="detail"] .detail-panel {
-        top: 48%;
+        top: 54%;
         right: 5%;
         left: 5%;
         width: auto;
-        max-height: 46svh;
+        max-height: 40svh;
         overflow: auto;
         padding-bottom: 24px;
       }
@@ -2086,13 +2093,13 @@
 
     @media (max-width: 560px) {
       [data-mode="detail"] .book-card.selected {
-        top: 24%;
+        top: 40%;
         width: min(58vw, 200px);
       }
 
       [data-mode="detail"] .detail-panel {
-        top: 42%;
-        max-height: 52svh;
+        top: 52%;
+        max-height: 42svh;
       }
     }
 
